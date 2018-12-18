@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Arvo|Maitree');
+
+* {
+  box-sizing: border-box;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+}
+
+html, body {
+  height: 100%;
+  font-size: 12px;
+  font-family: 'Maitree', serif;
+  color: black;
+  font-weight: 400;
+}
+
+/* Desktops and laptops ----------- */
+@media only screen
+and (min-width : 600px) {
+  body {
+    font-size: 15px;
+  }
+}
