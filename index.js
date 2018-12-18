@@ -105,8 +105,8 @@ function getCrosswords(type) {
         const data = await promisifiedParseString(res);
         const xwordObj = restructureData(data);
 
-        // Remove stringify once work has been done
-        const json = JSON.stringify(xwordObj, null, 2);
+        // Remove stringify indentation once work has been done
+        const json = JSON.stringify(xwordObj);
 
         await promisifiedWriteFile(uri, json);
         log(`Saved ${i}/${uris[type].length} ${uri}`);
