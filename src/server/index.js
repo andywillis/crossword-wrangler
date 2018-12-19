@@ -34,5 +34,5 @@ app.get('*', (req, res) => {
 const server = http.createServer(app);
 
 server.listen(app.get('port'), () => {
-  console.log('Listening on port', app.get('port'));
+  console.log(`${applicationName} listening on port ${app.get('port')}`);
 });
