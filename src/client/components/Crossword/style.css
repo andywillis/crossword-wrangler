@@ -1,0 +1,10 @@
+.crossword {
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+}

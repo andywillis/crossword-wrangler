@@ -78,8 +78,7 @@ module.exports = (env, argv) => ({
     historyApiFallback: true,
     proxy: {
       open: true,
-      '/journal': 'http://localhost:3000',
-      '/reload': 'http://localhost:3000'
+      '/crossword': 'http://localhost:3000'
     }
   },
   plugins: [

@@ -1,12 +1,15 @@
 import React from 'react';
 
-import Clue from '../Clue';
+import ClueSet from '../ClueSet';
 
 import style from './style.css';
 
-function Clues() {
+function Clues({ clues: { across, down } }) {
   return (
-    <Clue className={style.clues} />
+    <div className={style.clues}>
+      <ClueSet type="across" clues={across} />
+      <ClueSet type="down" clues={down} />
+    </div>
   );
 }
 

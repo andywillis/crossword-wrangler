@@ -2,9 +2,12 @@ import React from 'react';
 
 import style from './style.css';
 
-function Clues() {
+function Clues({ clue, number }) {
   return (
-    <div className={style.clue} />
+    <li className={style.clue}>
+      <div className={style.number}>{number}</div>
+      {clue}
+    </li>
   );
 }
 

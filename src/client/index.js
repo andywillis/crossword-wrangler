@@ -1,17 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
-import Clues from './components/Clues';
-import Grid from './components/Grid';
+import App from './components/App';
 
 import './style.css';
 
-function Crossword() {
-  return (
-    <main>
-      <Clues />
-      <Grid />
-    </main>
-  );
-}
-
-export default Crossword;
+ReactDOM.render((
+  <App />
+), document.getElementById('root'));

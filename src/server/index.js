@@ -20,22 +20,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../../dist')));
 
-// Main
-
-// Routes
-
-app.get('/:type/:id', async (req, res) => {
+app.get('/crossword/:type/:id', async (req, res) => {
   const { type, id } = req.params;
-  const filePath = path.join(__dirname, `data/${id}.json`);
-  const json = await promisifiedReadFile(filePath).catch(err => console.log(err));
-  res.json(json);
+  const filePath = path.join(__dirname, `data/${type}/${type}_${id}.json`);
+  const json = await promisifiedReadFile(filePath, 'utf8').catch(err => console.log(err));
+  res.send(json);
 });
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../dist', 'index.html'));
 });
-
-// Server
 
 const server = http.createServer(app);
 

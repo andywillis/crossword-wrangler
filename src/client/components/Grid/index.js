@@ -1,4 +1,5 @@
 import React from 'react';
+import { dataReady } from '../../lib/utils';
 
 import Square from '../Square';
 
@@ -7,7 +8,9 @@ import style from './style.css';
 function Grid({ squares }) {
   return (
     <div className={style.grid}>
-      {squares.map(square => <Square data={square} />)};
+      {dataReady(squares) && squares.map((square, i) => {
+        return <Square key={i} square={square} />;
+      })}
     </div>
   );
 }

@@ -64,20 +64,31 @@ function addFolder(root, folderName) {
   });
 }
 
+function getClues(obj) {
+  const { title, clue: cluesArr } = obj;
+  const label = title[0].b[0];
+  const clues = cluesArr.map((o) => {
+    const { _: clue, $: meta } = o;
+    return { clue, meta };
+  });
+  return { label, clues };
+}
+
 function restructureData(data) {
   const { crossword } = data['crossword-compiler']['rectangular-puzzle'][0];
   const { grid, word, clues: cluesArr } = crossword[0];
   const { $: { width, height }, cell } = grid[0];
 
-  const cells = cell.map(o => o.$);
+  const squares = cell.map(o => o.$);
   const words = word.map(o => o.$);
 
-  const clues = cluesArr[0].clue.map((o) => {
-    const { _: clue, $: meta } = o;
-    return { clue, meta };
-  });
+  const clues = {};
+  const clueSet1 = getClues(cluesArr[0]);
+  const clueSet2 = getClues(cluesArr[1]);
+  clues[clueSet1.label.toLowerCase()] = clueSet1.clues;
+  clues[clueSet2.label.toLowerCase()] = clueSet2.clues;
 
-  return { width, height, cells, words, clues };
+  return { width, height, squares, words, clues };
 }
 
 function getCrosswords(type) {

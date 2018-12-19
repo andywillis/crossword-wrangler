@@ -5,11 +5,11 @@ import Grid from '../Grid';
 
 import style from './style.css';
 
-function Crossword() {
+function Crossword({ squares, clues }) {
   return (
     <main className={style.crossword}>
-      <Clues />
-      <Grid />
+      <Clues clues={clues} />
+      <Grid squares={squares} />
     </main>
   );
 }

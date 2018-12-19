@@ -1,0 +1,18 @@
+.clue {
+  font-size: 0.9em;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.clue:not(:first-child) {
+  margin-top: 2px;
+}
+
+.number {
+  background-color: #efefef;
+  border: 1px solid #ababab;
+  width: 25px;
+  text-align: center;
+  margin-right: 0.4em;
+}

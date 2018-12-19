@@ -1,0 +1,15 @@
+.square {
+  box-sizing: border-box;
+  border: 1px solid #dfdfdf;
+  background-color: white;
+}
+
+.number {
+  z-index: 10;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.block {
+  background-color: black;
+}
