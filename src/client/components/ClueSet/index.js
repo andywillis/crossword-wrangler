@@ -11,7 +11,7 @@ function ClueSet({ type, clues }) {
   return (
     <section className={style.clueSet}>
       <Heading color="black" level="h4">{type.toUpperCase()}</Heading>
-      <ul>
+      <ul className={style.clueList}>
         {dataReady(clues) && clues.map((obj, i) => {
           const { clue, meta: { number, format } } = obj;
           return (

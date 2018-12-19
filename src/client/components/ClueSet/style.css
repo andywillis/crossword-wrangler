@@ -2,6 +2,6 @@
   width: 100%;
 }
 
-.clueSet:first-child {
-  margin-right: 3em;
+.clueList {
+  margin-top: 1em;
 }
