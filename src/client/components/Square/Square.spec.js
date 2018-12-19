@@ -5,7 +5,9 @@ import Square from './index';
 
 describe('Square component', () => {
 
-  const wrapper = shallow(<Square />);
+  const square = {};
+
+  const wrapper = shallow(<Square square={square} />);
 
   it('the component is rendered', () => {
     expect(wrapper).not.toBe(undefined);

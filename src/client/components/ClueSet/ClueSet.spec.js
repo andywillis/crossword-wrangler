@@ -5,7 +5,10 @@ import ClueSet from './index';
 
 describe('ClueSet component', () => {
 
-  const wrapper = shallow(<ClueSet />);
+  const type = 'across';
+  const clues = [];
+
+  const wrapper = shallow(<ClueSet type={type} clues={clues} />);
 
   it('the component is rendered', () => {
     expect(wrapper).not.toBe(undefined);
