@@ -5,6 +5,7 @@
 .grid {
   margin-left: 2em;
   grid-gap: 0;
+  border: 1px solid black;
   display: grid;
   border: 1px solid #343434;
   grid-template-rows: repeat(13, var(--square-width));
