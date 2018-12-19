@@ -33,6 +33,7 @@ class App extends Component {
       <div className={style.app}>
         <Heading level="h2">Easy Crossword - {formatDate('180101')}</Heading>
         {dataReady(crossword) && <Crossword clues={clues} squares={squares} />}
+        <footer>&copy; Andy Willis</footer>
       </div>
     );
   }
