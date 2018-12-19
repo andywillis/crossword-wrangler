@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { dataReady } from '../../lib/utils';
+import { getDeviceDimensions } from '../../lib/device';
 
 import Crossword from '../Crossword';
 import Heading from '../Common/Heading';
@@ -28,13 +29,15 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    const { deviceWidth } = getDeviceDimensions();
+    this.deviceWidth = deviceWidth;
+    window.onbeforeprint = this.handleBeforePrint;
+    window.onafterprint = this.handleAfterPrint;
     const res = await fetch('/crossword/sample/180101');
     const crossword = await res.json();
     this.setState({ crossword });
-    window.onbeforeprint = this.handleBeforePrint;
-    window.onafterprint = this.handleAfterPrint;
   }
-  
+
   setNode(node) {
     const { props: { 'data-type': type } } = node;
     this.nodes[type] = node;
@@ -43,7 +46,7 @@ class App extends Component {
   handleBeforePrint() {
     this.setState({ print: true });
   }
-  
+
   handleAfterPrint() {
     this.setState({ print: false });
   }
@@ -55,9 +58,21 @@ class App extends Component {
       <div className={style.app}>
         <Heading level="h2">
           Easy Crossword&nbsp;&mdash;&nbsp;
-          <DatePicker print={print} min="2016-05-23" value={getNowDate()} />
+          <DatePicker
+            deviceWidth={this.deviceWidth}
+            print={print}
+            min="2016-05-23"
+            value={getNowDate()}
+          />
         </Heading>
-        {dataReady(crossword) && <Crossword clues={clues} squares={squares} />}
+        {dataReady(crossword) && (
+          <Crossword
+            deviceWidth={this.deviceWidth}
+            print={print}
+            clues={clues}
+            squares={squares}
+          />
+        )}
       </div>
     );
   }

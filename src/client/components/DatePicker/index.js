@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import style from './style.css';
-import { format } from 'url';
 
 function formatDate(str) {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: '2-digit' };
@@ -23,13 +22,18 @@ class DatePicker extends Component {
   }
 
   render() {
+
     const { value, min } = this.state;
     const { print } = this.props;
+
+    // If we're printing the page we need to show this span
+    // instead as the input never appears
     if (print) {
       return (
         <span className={style.printDate}>{formatDate(value)}</span>
       );
     }
+
     return (
       <input
         className={style.datePicker}
@@ -39,6 +43,7 @@ class DatePicker extends Component {
         onChange={this.handleChange}
       />
     );
+
   }
 
 }
