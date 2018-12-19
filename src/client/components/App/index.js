@@ -5,6 +5,7 @@ import { getDeviceDimensions } from '../../lib/device';
 import Crossword from '../Crossword';
 import Heading from '../Common/Heading';
 import DatePicker from '../DatePicker';
+import Spinner from '../Spinner';
 
 import style from './style.css';
 
@@ -54,27 +55,28 @@ class App extends Component {
   render() {
     const { crossword, print } = this.state;
     const { clues, squares } = crossword;
-    return (
-      <div className={style.app}>
-        <Heading level="h2">
-          Easy Crossword&nbsp;&mdash;&nbsp;
-          <DatePicker
-            deviceWidth={this.deviceWidth}
-            print={print}
-            min="2016-05-23"
-            value={getNowDate()}
-          />
-        </Heading>
-        {dataReady(crossword) && (
+    if (dataReady(crossword)) {
+      return (
+        <div className={style.app}>
+          <Heading level="h2">
+            Easy Crossword&nbsp;&mdash;&nbsp;
+            <DatePicker
+              deviceWidth={this.deviceWidth}
+              print={print}
+              min="2016-05-23"
+              value={getNowDate()}
+            />
+          </Heading>
           <Crossword
             deviceWidth={this.deviceWidth}
             print={print}
             clues={clues}
             squares={squares}
           />
-        )}
-      </div>
-    );
+        </div>
+      );
+    }
+    return <Spinner />;
   }
 }
 

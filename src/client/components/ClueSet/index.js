@@ -1,8 +1,6 @@
 import React from 'react';
 
 import Heading from '../Common/Heading';
-import { dataReady } from '../../lib/utils';
-
 import Clue from '../Clue';
 
 import style from './style.css';
@@ -12,7 +10,7 @@ function ClueSet({ type, clues }) {
     <section className={style.clueSet}>
       <Heading color="black" level="h4">{type.toUpperCase()}</Heading>
       <ul className={style.clueList}>
-        {dataReady(clues) && clues.map((obj, i) => {
+        {clues.map((obj, i) => {
           const { clue, meta: { number, format } } = obj;
           return (
             <Clue
