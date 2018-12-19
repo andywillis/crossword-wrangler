@@ -1,50 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { dataReady } from '../../lib/utils';
 
 import Square from '../Square';
 
 import style from './style.css';
 
-class Grid extends Component {
+function calcWidth(print, deviceWidth) {
+  let width = deviceWidth <= 1024 ? 38 : 50;
+  const minus = deviceWidth <= 1024 ? 2 : 14;
+  width = print ? width - minus : width;
+  return width;
+}
 
-  static calcWidth(print, deviceWidth) {
-    let width = deviceWidth <= 1024 ? 38 : 50;
-    const minus = deviceWidth <= 1024 ? 2 : 14;
-    width = print ? width - minus : width;
-    return width;
-  }
+function Grid({ squares, print, deviceWidth }) {
 
-  constructor(props) {
-    super(props);
-    this.setWidth = this.setWidth.bind(this);
-  }
+  let width;
 
-  componentDidMount() {
-    this.setWidth();
-  }
-
-  componentDidUpdate() {
-    this.setWidth();
-  }
-
-  setWidth() {
-    const { print, deviceWidth } = this.props;
-    const width = Grid.calcWidth(print, deviceWidth);
+  if (dataReady(squares)) {
+    width = calcWidth(print, deviceWidth);
     document.documentElement.style.setProperty('--square-width', `${width}px`);
   }
 
-  render() {
-    const { squares } = this.props;
-    return (
-      <div className={style.wrapper}>
-        <div className={style.grid}>
-          {dataReady(squares) && squares.map((square, i) => {
-            return <Square key={i} square={square} />;
-          })}
-        </div>
+  return (
+    <div className={style.wrapper}>
+      <div className={style.grid}>
+        {dataReady(squares) && squares.map((square, i) => {
+          return <Square key={i} square={square} />;
+        })}
       </div>
-    );
-  }
+    </div>
+  );
 
 }
 
