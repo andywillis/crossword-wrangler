@@ -1,0 +1,9 @@
+.printData, .datePicker {
+  font-size: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.datePicker {
+  background-color: #efefef;
+}

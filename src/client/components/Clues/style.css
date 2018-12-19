@@ -1,5 +1,11 @@
+:root {
+  --font-size: 1.8em;
+}
+
 .clues {
   width: 100%;
   display: flex;
   flex-direction: row;
+  font-size: var(--font-size);
+  line-height: 1.4em;
 }
