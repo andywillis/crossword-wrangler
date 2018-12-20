@@ -38,16 +38,6 @@ class Grid extends Component {
       return (
         <div className={style.wrapper}>
 
-          <ButtonGroup print={print}>
-
-            <Button
-              type="button"
-              toggleSolution={this.toggleSolution}
-            >Toggle solution
-            </Button>
-
-          </ButtonGroup>
-
           <div className={style.grid}>
             {dataReady(squares) && squares.map((square, i) => {
               return (
@@ -61,6 +51,16 @@ class Grid extends Component {
               );
             })}
           </div>
+
+          <ButtonGroup print={print}>
+
+            <Button
+              type="button"
+              toggleSolution={this.toggleSolution}
+            >Toggle solution
+            </Button>
+
+          </ButtonGroup>
 
         </div>
       );
