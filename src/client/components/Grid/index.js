@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { dataReady } from '../../lib/utils';
 
+import ButtonGroup from '../ButtonGroup';
+import Button from '../Button';
 import Square from '../Square';
 
 import style from './style.css';
@@ -12,24 +14,58 @@ function calcWidth(print, deviceWidth) {
   return width;
 }
 
-function Grid({ squares, print, deviceWidth }) {
+class Grid extends Component {
 
-  let width;
-
-  if (dataReady(squares)) {
-    width = calcWidth(print, deviceWidth);
-    document.documentElement.style.setProperty('--square-width', `${width}px`);
+  constructor(props) {
+    super(props);
+    this.state = { showSolution: false };
+    this.toggleSolution = this.toggleSolution.bind(this);
   }
 
-  return (
-    <div className={style.wrapper}>
-      <div className={style.grid}>
-        {dataReady(squares) && squares.map((square, i) => {
-          return <Square key={i} square={square} />;
-        })}
-      </div>
-    </div>
-  );
+  toggleSolution() {
+    this.setState(prev => ({ showSolution: !prev.showSolution }));
+  }
+
+  render() {
+    const { squares, print, deviceWidth } = this.props;
+    const { showSolution } = this.state;
+
+    if (dataReady(squares)) {
+
+      const width = calcWidth(print, deviceWidth);
+      document.documentElement.style.setProperty('--square-width', `${width}px`);
+    
+      return (
+        <div className={style.wrapper}>
+
+          <ButtonGroup print={print}>
+
+            <Button
+              type="button"
+              toggleSolution={this.toggleSolution}
+            >Toggle solution
+            </Button>
+
+          </ButtonGroup>
+
+          <div className={style.grid}>
+            {dataReady(squares) && squares.map((square, i) => {
+              return (
+                <Square
+                  showSolution={showSolution}
+                  key={i}
+                  square={square}
+                  print={print}
+                  deviceWidth={deviceWidth}
+                />
+              );
+            })}
+          </div>
+
+        </div>
+      );
+    }
+  }
 
 }
 

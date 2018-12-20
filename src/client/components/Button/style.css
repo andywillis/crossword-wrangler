@@ -1,0 +1,18 @@
+.button {
+  font-size: 1em;
+  padding: 0.5em;
+  border: 1px solid #9fc59f;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button:not(.on):hover {
+  background-color: #dfdfdf;
+}
+
+.on {
+  border: 1px solid #343434;
+  background-color: #9fc59f;
+}
