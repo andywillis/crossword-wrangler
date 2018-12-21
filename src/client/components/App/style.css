@@ -5,3 +5,15 @@
   margin-left: 5%;
   min-height: 100vh;
 }
+
+.loader {
+  margin-left: 2em;
+  padding: 0 1em 0 1em;
+  display: inline;
+  visibility: hidden;
+  background-color: rgb(182, 145, 145);
+}
+
+.loading {
+  visibility: visible;
+}

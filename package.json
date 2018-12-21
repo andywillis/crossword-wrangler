@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "builddev": "webpack-dev-server --mode development --devtool inline-source-map --hot",
-    "serverdev": "nodemon src/server/index.js",
+    "serverdev": "node src/server/index.js",
     "buildprod": "webpack --mode production",
-    "serverprod": "nodemon src/server/index.js",
+    "serverprod": "node src/server/index.js",
     "dev": "concurrently \"npm run builddev\" \"npm run serverdev\"",
     "prod": "npm run buildprod && npm run serverprod",
     "report": "webpack-bundle-analyzer --port 4200 dist/stats.json",

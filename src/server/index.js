@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const { readFile } = require('fs');
 const { promisify } = require('util');
+const { pathExists } = require('./lib/io');
+const { getCrosswords } = require('./wrangle');
 
 const promisifiedReadFile = promisify(readFile);
 
@@ -23,8 +25,14 @@ app.use(express.static(path.join(__dirname, '../../dist')));
 app.get('/crossword/:type/:id', async (req, res) => {
   const { type, id } = req.params;
   const filePath = path.join(__dirname, `data/${type}/${type}_${id}.json`);
-  const json = await promisifiedReadFile(filePath, 'utf8').catch(err => console.log(err));
+
+  if (!await pathExists(filePath)) {
+    await getCrosswords(type, id);
+  }
+
+  const json = await promisifiedReadFile(filePath, 'utf8');
   res.send(json);
+
 });
 
 app.get('*', (req, res) => {

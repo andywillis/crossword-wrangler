@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import compileClasses from 'classnames';
+
 import { dataReady } from '../../lib/utils';
 import { getDeviceDimensions } from '../../lib/device';
 
@@ -9,12 +11,13 @@ import Spinner from '../Spinner';
 
 import style from './style.css';
 
-function getNowDate() {
+function getNowDate(delimiter) {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
   const now = new Date().toLocaleString('en-GB', options);
   const re = /(\d{2})\/(\d{2})\/(\d{4})/g;
   return now.replace(re, (all, d, m, y) => {
-    return `${y}-${m}-${d}`;
+    const year = delimiter ? y : y.substr(2, 2);
+    return delimiter ? `${year}-${m}-${d}` : `${year}${m}${d}`;
   });
 }
 
@@ -22,10 +25,11 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { crossword: {}, print: false };
+    this.state = { crossword: {}, print: false, loading: false };
     this.nodes = {};
     this.handleBeforePrint = this.handleBeforePrint.bind(this);
     this.handleAfterPrint = this.handleAfterPrint.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.setNode = this.setNode.bind(this);
   }
 
@@ -34,14 +38,24 @@ class App extends Component {
     this.deviceWidth = deviceWidth;
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
-    const res = await fetch('/crossword/sample/180101');
-    const crossword = await res.json();
-    this.setState({ crossword });
+    this.fetchData(getNowDate(false));
   }
 
   setNode(node) {
     const { props: { 'data-type': type } } = node;
     this.nodes[type] = node;
+  }
+
+  async fetchData(date) {
+    this.setState({ loading: true });
+    const res = await fetch(`/crossword/easy/${date}`);
+    const crossword = await res.json();
+    this.setState({ crossword });
+    this.setState({ loading: false });
+  }
+
+  handleDateChange(date) {
+    this.fetchData(date);
   }
 
   handleBeforePrint() {
@@ -53,7 +67,7 @@ class App extends Component {
   }
 
   render() {
-    const { crossword, print } = this.state;
+    const { crossword, print, loading } = this.state;
     const { clues, squares } = crossword;
     if (dataReady(crossword)) {
       return (
@@ -64,8 +78,10 @@ class App extends Component {
               deviceWidth={this.deviceWidth}
               print={print}
               min="2016-05-23"
-              value={getNowDate()}
+              value={getNowDate(true)}
+              handleDateChange={this.handleDateChange}
             />
+            {loading && <div className={compileClasses(style.loader, style.loading)}>Loading</div>}
           </Heading>
           <Crossword
             deviceWidth={this.deviceWidth}
