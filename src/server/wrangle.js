@@ -1,68 +1,21 @@
 const request = require('request-promise-native');
-const { mkdir, writeFile } = require('fs');
 const { promisify } = require('util');
 const path = require('path');
 const log = require('single-line-log').stdout;
-
 const createThrottle = require('async-throttle');
 const { parseString } = require('xml2js');
 
+const { writeFile, pathExists, addFolder } = require('./lib/io');
+const { getWeekDayCalendar } = require('./lib/calendar');
+
 const throttle = createThrottle(2);
-const promisifiedParseString = promisify(parseString);
-const promisifiedWriteFile = promisify(writeFile);
-const promisifiedMkdir = promisify(mkdir);
+const xmlParseString = promisify(parseString);
 
 const uris = { easy: [], quick: [] };
 const uri = 'https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/evening-standard/daily-crossword/';
 
-function padNumber(n) {
-  const s = n.toString();
-  return s.length === 1 ? `0${s}` : s;
-}
-
-function getWeekDayCalendar(year) {
-  const arr = [];
-  for (let m = 1; m <= 12; m++) {
-
-    // JS is messy - to get the number of days in a month
-    // use the actual month number (starting from index 1)
-    const date = new Date(year, m, 0);
-    const daysInMonth = date.getDate();
-    for (let d = 1; d <= daysInMonth; d++) {
-
-      // ...but to get the day of the week
-      // you need to use a zero-index month!
-      const date = new Date(year, m - 1, d);
-      const dayNumber = date.getDay();
-      if (dayNumber > 0 && dayNumber < 6) {
-        arr.push(`${year.toString().slice(2)}${padNumber(m)}${padNumber(d)}`);
-      }
-    }
-  }
-  return arr;
-}
-
 uris.easy = getWeekDayCalendar(2018).map(date => `${uri}easy_${date}.xml`);
 uris.quick = getWeekDayCalendar(2018).map(date => `${uri}quic_${date}.xml`);
-
-function logError(err) {
-  console.log(err.message);
-}
-
-function verifyFolderExists(path) {
-  return new Promise(async (resolve) => {
-    await promisifiedMkdir(path).catch(logError);
-    resolve();
-  });
-}
-
-function addFolder(root, folderName) {
-  return new Promise(async (resolve) => {
-    const filePath = `${root}/data/${folderName}`;
-    await verifyFolderExists(filePath).catch(logError);
-    resolve();
-  });
-}
 
 function getClues(obj) {
   const { title, clue: cluesArr } = obj;
@@ -91,50 +44,55 @@ function restructureData(data) {
   return { width, height, squares, words, clues };
 }
 
-function getCrosswords(type) {
+async function processLink(link, index, type, filePath) {
+  const filename = link.split('/').pop().replace('xml', 'json');
+  const uri = path.join(filePath, filename);
 
-  const root = path.join(__dirname);
+  // Request the links from the ES, parse the XML to JSON
+  // restructure the JSON into something more managable,
+  // then save it to disc.
+  if (await pathExists(uri)) {
+    console.log(`Skipping: ${uri}`);
+  } else {
+    try {
+      const res = await request(link);
+      const data = await xmlParseString(res);
+      const xwordObj = restructureData(data);
+      const json = JSON.stringify(xwordObj);
 
-  return new Promise(async (resolve) => {
-
-    // First add a folder to root
-    await addFolder(root, type).catch(logError);
-
-    // Iterate over the crossword URIs (2 at a time)
-    // request them from the ES, parse the XML to JSON
-    // restructure the JSON into something more managable,
-    // then save it to disc.
-    uris[type].forEach((link, i) => throttle(async () => {
-
-      const filePath = path.join(__dirname, `data/${type}`);
-      const filename = link.split('/').pop().replace('xml', 'json');
-      const uri = `${filePath}/${filename}`;
-
-      try {
-
-        const res = await request(link);
-        const data = await promisifiedParseString(res);
-        const xwordObj = restructureData(data);
-
-        // Remove stringify indentation once work has been done
-        const json = JSON.stringify(xwordObj);
-
-        await promisifiedWriteFile(uri, json);
-        log(`Saved ${i}/${uris[type].length} ${uri}`);
-
-      } catch (err) {
-        console.log(`${uri} - bad or missing data`);
-      }
-
-    }));
-
-    resolve();
-
-  });
+      await writeFile(uri, json);
+      log(`Saved ${index}/${uris[type].length} ${uri}`);
+    } catch (err) {
+      console.error(`${err.statusCode}`);
+    }
+  }
 
 }
 
-(async () => {
+async function getCrosswords(type, id) {
+  const root = path.join(__dirname);
+  const filePath = path.join(root, 'data', type);
+
+  if (!await pathExists(filePath)) {
+    await addFolder(filePath);
+  }
+
+  if (id) {
+    await processLink(`${uri}${type}_${id}.xml`, 0, type, filePath);
+  } else {
+    uris[type].forEach((link, index) => {
+      throttle(() => processLink(link, index, type, filePath));
+    });
+  }
+
+}
+
+async function downloadAllCrosswords() {
   await getCrosswords('easy');
   await getCrosswords('quick');
-})();
+}
+
+module.exports = {
+  getCrosswords,
+  downloadAllCrosswords
+};

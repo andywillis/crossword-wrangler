@@ -27,11 +27,7 @@
     "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
     "no-console": 0,
     "object-curly-newline": 0,
-    "array-bracket-spacing": ["error", "always", {
-      "singleValue": false,
-      "objectsInArrays": false,
-      "arraysInArrays": false
-    }],
+    "array-bracket-spacing": ["error", "never"],
     "comma-dangle": 0,
     "padded-blocks": 0,
     "arrow-body-style": 0,

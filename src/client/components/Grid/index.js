@@ -7,10 +7,18 @@ import Square from '../Square';
 
 import style from './style.css';
 
-function calcWidth(print, deviceWidth) {
-  let width = deviceWidth <= 1024 ? 38 : 50;
-  const minus = deviceWidth <= 1024 ? 2 : 14;
-  width = print ? width - minus : width;
+function calcWidth(print, deviceWidth, noOfSquares) {
+  let width;
+  if (noOfSquares === '13') {
+    width = deviceWidth <= 1024 ? 38 : 50;
+    const minus = deviceWidth <= 1024 ? 2 : 14;
+    width = print ? width - minus : width;
+  }
+  if (noOfSquares === '19') {
+    width = deviceWidth <= 1024 ? 27 : 34;
+    const minus = deviceWidth <= 1024 ? 1 : 9;
+    width = print ? width - minus : width;
+  }
   return width;
 }
 
@@ -27,44 +35,46 @@ class Grid extends Component {
   }
 
   render() {
-    const { squares, print, deviceWidth } = this.props;
+
+    const { width: noOfSquares, squares, print, deviceWidth } = this.props;
     const { showSolution } = this.state;
 
+    let squareWidth;
+
     if (dataReady(squares)) {
-
-      const width = calcWidth(print, deviceWidth);
-      document.documentElement.style.setProperty('--square-width', `${width}px`);
-    
-      return (
-        <div className={style.wrapper}>
-
-          <div className={style.grid}>
-            {dataReady(squares) && squares.map((square, i) => {
-              return (
-                <Square
-                  showSolution={showSolution}
-                  key={i}
-                  square={square}
-                  print={print}
-                  deviceWidth={deviceWidth}
-                />
-              );
-            })}
-          </div>
-
-          <ButtonGroup print={print}>
-
-            <Button
-              type="button"
-              toggleSolution={this.toggleSolution}
-            >Toggle solution
-            </Button>
-
-          </ButtonGroup>
-
-        </div>
-      );
+      squareWidth = calcWidth(print, deviceWidth, noOfSquares);
+      document.documentElement.style.setProperty('--square-width', `${squareWidth}px`);
+      document.documentElement.style.setProperty('--grid-noOfSquares', noOfSquares);
     }
+
+    return (
+      <div className={style.wrapper}>
+
+        <div className={style.grid}>
+          {dataReady(squares) && squares.map((square, i) => {
+            return (
+              <Square
+                showSolution={showSolution}
+                key={i}
+                square={square}
+                print={print}
+                deviceWidth={deviceWidth}
+                noOfSquares={noOfSquares}
+              />
+            );
+          })}
+        </div>
+
+        <ButtonGroup print={print}>
+          <Button
+            type="button"
+            toggleSolution={this.toggleSolution}
+          >Toggle solution
+          </Button>
+        </ButtonGroup>
+
+      </div>
+    );
   }
 
 }

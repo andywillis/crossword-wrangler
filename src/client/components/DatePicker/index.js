@@ -9,6 +9,11 @@ function formatDate(str) {
 
 class DatePicker extends Component {
 
+  static stripDate(date) {
+    const [year, month, day] = date.split('-');
+    return `${year.substr(2, 2)}${month}${day}`;
+  }
+
   constructor(props) {
     super(props);
     const { value, min } = props;
@@ -18,7 +23,10 @@ class DatePicker extends Component {
 
   handleChange(e) {
     const { value } = e.target;
+    const { handleDateChange } = this.props;
+    e.target.blur();
     this.setState({ value });
+    handleDateChange(DatePicker.stripDate(value));
   }
 
   render() {
