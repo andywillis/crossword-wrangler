@@ -1,5 +1,6 @@
 :root {
   --square-width: 38px;
+  --grid-noOfSquares: 13;
 }
 
 .grid {
@@ -8,7 +9,7 @@
   border: 1px solid black;
   display: grid;
   border: 1px solid #343434;
-  grid-template-rows: repeat(13, var(--square-width));
-  grid-template-columns: repeat(13, var(--square-width));
+  grid-template-rows: repeat(var(--grid-noOfSquares), var(--square-width));
+  grid-template-columns: repeat(var(--grid-noOfSquares), var(--square-width));
   grid-auto-flow: column;
 }

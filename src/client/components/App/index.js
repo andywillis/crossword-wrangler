@@ -26,11 +26,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { crossword: {}, print: false, loading: false };
-    this.nodes = {};
     this.handleBeforePrint = this.handleBeforePrint.bind(this);
     this.handleAfterPrint = this.handleAfterPrint.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.setNode = this.setNode.bind(this);
   }
 
   async componentDidMount() {
@@ -39,11 +37,6 @@ class App extends Component {
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
     this.fetchData(getNowDate(false));
-  }
-
-  setNode(node) {
-    const { props: { 'data-type': type } } = node;
-    this.nodes[type] = node;
   }
 
   async fetchData(date) {
@@ -68,7 +61,10 @@ class App extends Component {
 
   render() {
     const { crossword, print, loading } = this.state;
-    const { clues, squares } = crossword;
+    const { width, height, clues, squares } = crossword;
+
+    const loaderClass = compileClasses(style.loader, style.loading);
+
     if (dataReady(crossword)) {
       return (
         <div className={style.app}>
@@ -81,9 +77,11 @@ class App extends Component {
               value={getNowDate(true)}
               handleDateChange={this.handleDateChange}
             />
-            {loading && <div className={compileClasses(style.loader, style.loading)}>Loading</div>}
+            {loading && <div className={loaderClass}>&#1422;</div>}
           </Heading>
           <Crossword
+            width={width}
+            height={height}
             deviceWidth={this.deviceWidth}
             print={print}
             clues={clues}

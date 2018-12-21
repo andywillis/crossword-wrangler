@@ -4,11 +4,22 @@ import ClueSet from '../ClueSet';
 
 import style from './style.css';
 
-function Clues({ clues: { across, down }, print, deviceWidth }) {
+function Clues({ clues: { across, down }, print, deviceWidth, width: noOfSquares }) {
 
-  let fontSize = deviceWidth <= 1024 ? 0.9 : 1.2;
-  const minus = deviceWidth <= 1024 ? -0.2 : 0.06;
-  fontSize = print ? Math.round((fontSize - minus) * 10) / 10 : fontSize;
+  let fontSize;
+
+  if (noOfSquares === '13') {
+    fontSize = deviceWidth <= 1024 ? 0.9 : 1.2;
+    const minus = deviceWidth <= 1024 ? -0.2 : 0.06;
+    fontSize = print ? Math.round((fontSize - minus) * 10) / 10 : fontSize;
+  }
+
+  if (noOfSquares === '19') {
+    fontSize = deviceWidth <= 1024 ? 0.9 : 1.2;
+    const minus = deviceWidth <= 1024 ? -0.125 : 0.2;
+    fontSize = print ? Math.round((fontSize - minus) * 10) / 10 : fontSize;
+  }
+
   document.documentElement.style.setProperty('--font-size', `${fontSize}em`);
 
   return (

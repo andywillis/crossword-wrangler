@@ -8,10 +8,12 @@
 
 .loader {
   margin-left: 2em;
-  padding: 0 1em 0 1em;
+  padding: 0 0.5em 0 0.5em;
+  font-size: 0.7em;
   display: inline;
   visibility: hidden;
-  background-color: rgb(182, 145, 145);
+  background-color: rgb(145, 182, 161);
+  color: #efefef;
 }
 
 .loading {

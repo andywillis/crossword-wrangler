@@ -24,6 +24,7 @@ class DatePicker extends Component {
   handleChange(e) {
     const { value } = e.target;
     const { handleDateChange } = this.props;
+    e.target.blur();
     this.setState({ value });
     handleDateChange(DatePicker.stripDate(value));
   }
