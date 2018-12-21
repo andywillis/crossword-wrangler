@@ -10,8 +10,8 @@ import style from './style.css';
 function calcWidth(print, deviceWidth, noOfSquares) {
   let width;
   if (noOfSquares === '13') {
-    width = deviceWidth <= 1024 ? 38 : 50;
-    const minus = deviceWidth <= 1024 ? 2 : 14;
+    width = deviceWidth <= 1024 ? 38 : 45;
+    const minus = deviceWidth <= 1024 ? 2 : 11;
     width = print ? width - minus : width;
   }
   if (noOfSquares === '19') {

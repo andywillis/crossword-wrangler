@@ -10,12 +10,12 @@ function Clues({ clues: { across, down }, print, deviceWidth, width: noOfSquares
 
   if (noOfSquares === '13') {
     fontSize = deviceWidth <= 1024 ? 0.9 : 1.2;
-    const minus = deviceWidth <= 1024 ? -0.2 : 0.06;
+    const minus = deviceWidth <= 1024 ? -0.1 : 0.1;
     fontSize = print ? Math.round((fontSize - minus) * 10) / 10 : fontSize;
   }
 
   if (noOfSquares === '19') {
-    fontSize = deviceWidth <= 1024 ? 0.9 : 1.2;
+    fontSize = deviceWidth <= 1024 ? 0.95 : 1.2;
     const minus = deviceWidth <= 1024 ? -0.125 : 0.2;
     fontSize = print ? Math.round((fontSize - minus) * 10) / 10 : fontSize;
   }
