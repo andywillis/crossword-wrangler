@@ -1,13 +1,25 @@
+:root {
+  --letter-size: 2em;
+}
+
 .square {
+  position: relative;
   box-sizing: border-box;
   border: 1px solid #343434;
   background-color: white;
 }
 
 .number {
+  z-index: 10;
+  position: absolute;
   margin: -0.3em 0 0 0.1em;
   font-size: 0.9em;
   font-weight: 500;
+}
+
+.letter {
+  font-size: var(--letter-size);
+  text-align: center;
 }
 
 .block {

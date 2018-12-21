@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { dataReady } from '../../lib/utils';
 
+import ButtonGroup from '../ButtonGroup';
+import Button from '../Button';
 import Square from '../Square';
 
 import style from './style.css';
@@ -20,25 +22,60 @@ function calcWidth(print, deviceWidth, noOfSquares) {
   return width;
 }
 
-function Grid({ width: noOfSquares, squares, print, deviceWidth }) {
+class Grid extends Component {
 
-  let squareWidth;
-
-  if (dataReady(squares)) {
-    squareWidth = calcWidth(print, deviceWidth, noOfSquares);
-    document.documentElement.style.setProperty('--square-width', `${squareWidth}px`);
-    document.documentElement.style.setProperty('--grid-noOfSquares', noOfSquares);
+  constructor(props) {
+    super(props);
+    this.state = { showSolution: false };
+    this.toggleSolution = this.toggleSolution.bind(this);
   }
 
-  return (
-    <div className={style.wrapper}>
-      <div className={style.grid}>
-        {dataReady(squares) && squares.map((square, i) => {
-          return <Square key={i} square={square} />;
-        })}
+  toggleSolution() {
+    this.setState(prev => ({ showSolution: !prev.showSolution }));
+  }
+
+  render() {
+
+    const { width: noOfSquares, squares, print, deviceWidth } = this.props;
+    const { showSolution } = this.state;
+
+    let squareWidth;
+
+    if (dataReady(squares)) {
+      squareWidth = calcWidth(print, deviceWidth, noOfSquares);
+      document.documentElement.style.setProperty('--square-width', `${squareWidth}px`);
+      document.documentElement.style.setProperty('--grid-noOfSquares', noOfSquares);
+    }
+
+    return (
+      <div className={style.wrapper}>
+
+        <div className={style.grid}>
+          {dataReady(squares) && squares.map((square, i) => {
+            return (
+              <Square
+                showSolution={showSolution}
+                key={i}
+                square={square}
+                print={print}
+                deviceWidth={deviceWidth}
+                noOfSquares={noOfSquares}
+              />
+            );
+          })}
+        </div>
+
+        <ButtonGroup print={print}>
+          <Button
+            type="button"
+            toggleSolution={this.toggleSolution}
+          >Toggle solution
+          </Button>
+        </ButtonGroup>
+
       </div>
-    </div>
-  );
+    );
+  }
 
 }
 
