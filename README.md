@@ -8,4 +8,9 @@ Note, this isn't meant to be a crossword that you can fill out, although I may i
 
 * Dropdown easy/quick
 * Routing
-* Proper date valiidation
+* Proper date valiidation / separate lib
+* Separate print lib
+* Move `wrangle.js` `readFile` to `io`
+* Redux
+* Preact
+* Improved error detection for 404s.

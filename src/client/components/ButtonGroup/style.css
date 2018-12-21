@@ -1,6 +1,14 @@
 .buttonGroup {
   margin-top: 0.5em;
-  text-align: right;
+  display: flex;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
 }
 
 .hidden {

@@ -1,25 +1,16 @@
 import React, { Component } from 'react';
 import compileClasses from 'classnames';
 
+import { getNowDate } from '../../lib/date';
 import { dataReady } from '../../lib/utils';
 import { getDeviceDimensions } from '../../lib/device';
 
+import Selector from '../Selector';
 import Crossword from '../Crossword';
 import Heading from '../Common/Heading';
-import DatePicker from '../DatePicker';
 import Spinner from '../Spinner';
 
 import style from './style.css';
-
-function getNowDate(delimiter) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  const now = new Date().toLocaleString('en-GB', options);
-  const re = /(\d{2})\/(\d{2})\/(\d{4})/g;
-  return now.replace(re, (all, d, m, y) => {
-    const year = delimiter ? y : y.substr(2, 2);
-    return delimiter ? `${year}-${m}-${d}` : `${year}${m}${d}`;
-  });
-}
 
 class App extends Component {
 
@@ -28,7 +19,7 @@ class App extends Component {
     this.state = { crossword: {}, print: false, loading: false };
     this.handleBeforePrint = this.handleBeforePrint.bind(this);
     this.handleAfterPrint = this.handleAfterPrint.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleCrosswordChange = this.handleCrosswordChange.bind(this);
   }
 
   async componentDidMount() {
@@ -36,19 +27,19 @@ class App extends Component {
     this.deviceWidth = deviceWidth;
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
-    this.fetchData(getNowDate(false));
+    this.fetchData('easy', getNowDate(false));
   }
 
-  async fetchData(date) {
+  async fetchData(type, date) {
     this.setState({ loading: true });
-    const res = await fetch(`/crossword/easy/${date}`);
+    const res = await fetch(`/crossword/${type}/${date}`);
     const crossword = await res.json();
     this.setState({ crossword });
     this.setState({ loading: false });
   }
 
-  handleDateChange(date) {
-    this.fetchData(date);
+  handleCrosswordChange(type, date) {
+    this.fetchData(type, date);
   }
 
   handleBeforePrint() {
@@ -69,14 +60,8 @@ class App extends Component {
       return (
         <div className={style.app}>
           <Heading level="h2">
-            Easy Crossword&nbsp;&mdash;&nbsp;
-            <DatePicker
-              deviceWidth={this.deviceWidth}
-              print={print}
-              min="2016-05-23"
-              value={getNowDate(true)}
-              handleDateChange={this.handleDateChange}
-            />
+            ES Crossword&nbsp;&mdash;&nbsp;
+            <Selector handleCrosswordChange={this.handleCrosswordChange} />
             {loading && <div className={loaderClass}>&#1422;</div>}
           </Heading>
           <Crossword

@@ -7,28 +7,33 @@ class Button extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { on: false };
+    this.state = { selected: false };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    const { toggleSolution } = this.props;
+    const { handleClick } = this.props;
     this.setState(prev => ({ on: !prev.on }));
-    toggleSolution();
+    handleClick();
   }
 
   render() {
 
-    const { on } = this.state;
-    const { children } = this.props;
-    const buttonClass = compileClasses(style.button, on && style.on);
+    const { selected } = this.state;
+    const { children, size } = this.props;
+
+    const buttonClass = compileClasses({
+      [style.button]: true,
+      [style[size]]: true,
+      [style.selected]: selected && true
+    });
 
     return (
       <button
         type="button"
         className={buttonClass}
         onClick={this.handleClick}
-      >{children} {on ? 'off' : 'on'}
+      >{children}
       </button>
     );
 

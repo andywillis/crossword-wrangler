@@ -1,8 +1,8 @@
 .button {
-  font-size: 1em;
-  padding: 0.5em;
   border: 1px solid #9fc59f;
+  padding: 0.8em;
 }
+
 
 .button:hover {
   cursor: pointer;
@@ -12,7 +12,19 @@
   background-color: #dfdfdf;
 }
 
-.on {
+.selected {
   border: 1px solid #343434;
   background-color: #9fc59f;
+}
+
+.small {
+  font-size: 0.8em;
+}
+
+.medium {
+  font-size: 1em;
+}
+
+.large {
+  font-size: 1.2em;
 }
