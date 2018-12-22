@@ -6,7 +6,7 @@ const statP = promisify(fs.stat);
 const writeFileP = promisify(fs.writeFile);
 
 function logError(err) {
-  console.error(err.message);
+  console.error(err.statusCode);
 }
 
 function addFolder(filePath) {

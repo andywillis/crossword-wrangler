@@ -8,7 +8,7 @@
   cursor: pointer;
 }
 
-.button:not(.on):hover {
+.button:not(.selected):hover {
   background-color: #dfdfdf;
 }
 

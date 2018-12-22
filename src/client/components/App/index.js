@@ -16,7 +16,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { crossword: {}, print: false, loading: false };
+    this.state = { crossword: {}, print: false, date: null, loading: false };
     this.handleBeforePrint = this.handleBeforePrint.bind(this);
     this.handleAfterPrint = this.handleAfterPrint.bind(this);
     this.handleCrosswordChange = this.handleCrosswordChange.bind(this);
@@ -24,18 +24,24 @@ class App extends Component {
 
   async componentDidMount() {
     const { deviceWidth } = getDeviceDimensions();
+    const date = getNowDate(true);
     this.deviceWidth = deviceWidth;
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
-    this.fetchData('easy', getNowDate(false));
+    this.fetchData('easy', date);
   }
 
   async fetchData(type, date) {
     this.setState({ loading: true });
+    // const res = await fetch(`/crossword/${type}/181212`);
     const res = await fetch(`/crossword/${type}/${date}`);
-    const crossword = await res.json();
-    this.setState({ crossword });
-    this.setState({ loading: false });
+    const [err, crossword] = await res.json();
+    if (err) {
+      console.error(err);
+    } else {
+      this.setState({ crossword });
+      this.setState({ loading: false });  
+    }
   }
 
   handleCrosswordChange(type, date) {
@@ -51,19 +57,19 @@ class App extends Component {
   }
 
   render() {
-    const { crossword, print, loading } = this.state;
+    const { crossword, print, loading, date } = this.state;
     const { width, height, clues, squares } = crossword;
 
     const loaderClass = compileClasses(style.loader, style.loading);
 
-    if (dataReady(crossword)) {
-      return (
-        <div className={style.app}>
-          <Heading level="h2">
-            ES Crossword&nbsp;&mdash;&nbsp;
-            <Selector handleCrosswordChange={this.handleCrosswordChange} />
-            {loading && <div className={loaderClass}>&#1422;</div>}
-          </Heading>
+    return (
+      <div className={style.app}>
+        <Heading level="h2">
+          ES Crossword&nbsp;&mdash;&nbsp;
+          <Selector date={date} handleCrosswordChange={this.handleCrosswordChange} />
+          {loading && <div className={loaderClass}>&#1422;</div>}
+        </Heading>
+        {dataReady(crossword) && (
           <Crossword
             width={width}
             height={height}
@@ -72,10 +78,9 @@ class App extends Component {
             clues={clues}
             squares={squares}
           />
-        </div>
-      );
-    }
-    return <Spinner />;
+        )}
+      </div>
+    );
   }
 }
 

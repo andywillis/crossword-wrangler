@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import DatePicker from '../DatePicker';
 
-import { getNowDate, stripDate } from '../../lib/date';
+import { stripDate } from '../../lib/date';
 
 import style from './style.css';
 
@@ -10,7 +10,7 @@ class Selector extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { type: 'easy', date: getNowDate(true) };
+    this.state = { type: 'easy', date: props.date };
     this.handleChange = this.handleChange.bind(this);
   }
 

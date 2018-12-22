@@ -65,12 +65,11 @@ class Grid extends Component {
           })}
         </div>
 
-        <ButtonGroup print={print} align="right">
+        <ButtonGroup print={print} align="right" handleChange={this.toggleSolution}>
           <Button
             type="button"
             size="medium"
             dataType="solution"
-            handleClick={this.toggleSolution}
           >Toggle solution
           </Button>
         </ButtonGroup>
