@@ -8,6 +8,12 @@ function getNowDate(delimiter) {
   });
 }
 
+function isAWeekDay(date) {
+  const d = `20${date.substr(0, 2)}-${date.substr(2, 2)}-${date.substr(4, 2)}`;
+  const n = new Date(d).getDay();
+  return [1, 2, 3, 4, 5].includes(n);
+}
+
 function formatDate(str) {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: '2-digit' };
   return new Date(str).toLocaleString('en-GB', options);
@@ -20,5 +26,6 @@ function stripDate(date) {
 module.exports = {
   getNowDate,
   formatDate,
-  stripDate
+  stripDate,
+  isAWeekDay
 };

@@ -1,6 +1,5 @@
 .buttonGroup {
-  margin-top: 0.5em;
-  display: flex;
+  display: inline-flex;
 }
 
 .left {
@@ -8,9 +7,18 @@
 }
 
 .right {
-  justify-content: flex-end;
+  margin-left: 0;
 }
 
 .hidden {
   display: none;
+}
+
+.printType {
+  display: inline;
+  margin-left: 0.2em;
+}
+
+.printType::after {
+  content: ',';
 }

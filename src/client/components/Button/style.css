@@ -1,8 +1,7 @@
 .button {
+  font-size: inherit;
   border: 1px solid #9fc59f;
-  padding: 0.8em;
 }
-
 
 .button:hover {
   cursor: pointer;
@@ -17,14 +16,22 @@
   background-color: #9fc59f;
 }
 
+.tiny {
+  font-size: 0.6em;
+  padding: 0.35em 0.6em;
+}
+
 .small {
   font-size: 0.8em;
+  padding: 0.4em;
 }
 
 .medium {
   font-size: 1em;
+  padding: 0.5em;
 }
 
 .large {
   font-size: 1.2em;
+  padding: 0.6em;
 }

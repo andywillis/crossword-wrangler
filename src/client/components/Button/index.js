@@ -3,7 +3,12 @@ import compileClasses from 'classnames';
 
 import style from './style.css';
 
-function Button({ dataId, size, selected, children, handleChange }) {
+function Button(props) {
+
+  const {
+    dataId, dataType, dataName, size,
+    selected, children, handleChange
+  } = props;
 
   const buttonClass = compileClasses({
     [style.button]: true,
@@ -15,6 +20,8 @@ function Button({ dataId, size, selected, children, handleChange }) {
     <button
       type="button"
       data-id={dataId}
+      data-type={dataType}
+      data-name={dataName}
       className={buttonClass}
       onClick={handleChange}
     >{children}

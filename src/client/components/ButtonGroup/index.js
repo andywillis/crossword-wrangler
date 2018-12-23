@@ -19,6 +19,7 @@ class ButtonGroup extends Component {
     });
     this.state = { buttons };
     this.handleChange = this.handleChange.bind(this);
+//    this.findSelectedText = this.findSelectedText.bind(this);
   }
 
   static getSelectedButton(id, buttons) {
@@ -42,14 +43,20 @@ class ButtonGroup extends Component {
   }
 
   handleChange(e) {
-    const { id } = e.target.dataset;
+    const { dataset: { id, type, name } } = e.target;
     const { handleChange } = this.props;
     this.updateButtons(id);
-    handleChange();
+    handleChange(type, name);
+  }
+
+  findSelectedText() {
+    const { buttons } = this.state;
+    const button = buttons.find(button => button.props.selected);
+    return button.props.children;
   }
 
   render() {
-    const { print, align } = this.props;
+    const { print, align, hide } = this.props;
     const { buttons } = this.state;
 
     const buttonGroupClasses = compileClasses({
@@ -57,6 +64,10 @@ class ButtonGroup extends Component {
       [style[align]]: true,
       [style.hidden]: print && true
     });
+
+    if (print && hide) {
+      return <div className={style.printType}>{this.findSelectedText()}</div>;
+    }
 
     return (
       <div className={buttonGroupClasses}>

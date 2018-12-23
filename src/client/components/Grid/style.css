@@ -14,3 +14,11 @@
   grid-template-columns: repeat(var(--grid-noOfSquares), var(--square-width));
   grid-auto-flow: column;
 }
+
+.buttons {
+  width: 100%;
+  margin-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
 import DatePicker from '../DatePicker';
+import ButtonGroup from '../ButtonGroup';
+import Button from '../Button';
 
-import { stripDate } from '../../lib/date';
+import { stripDate, getNowDate } from '../../lib/date';
 
 import style from './style.css';
 
@@ -10,12 +12,11 @@ class Selector extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { type: 'easy', date: props.date };
+    this.state = { type: props.type, date: props.date ? props.date : getNowDate(true) };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(e) {
-    const { dataset: { type }, value } = e.target;
+  handleChange(type, value) {
     this.setState({ [type]: value }, () => {
       const { handleCrosswordChange } = this.props;
       const { type, date } = this.state;
@@ -29,6 +30,24 @@ class Selector extends Component {
     return (
       <div className={style.selector}>
 
+        <ButtonGroup print={print} hide="true" handleChange={this.handleChange}>
+          <Button
+            type="button"
+            size="tiny"
+            dataType="type"
+            dataName="easy"
+            selected
+          >Easy
+          </Button>
+          <Button
+            type="button"
+            size="tiny"
+            dataType="type"
+            dataName="quic"
+          >Quick
+          </Button>
+        </ButtonGroup>
+
         <DatePicker
           deviceWidth={deviceWidth}
           print={print}
@@ -38,6 +57,7 @@ class Selector extends Component {
           handleChange={this.handleChange}
         />
       </div>
+
     );
   }
 
