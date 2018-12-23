@@ -1,6 +1,6 @@
 {
   "name": "crossword-wrangler",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Produce printable copies of the ES crosswords",
   "main": "index.js",
   "scripts": {
