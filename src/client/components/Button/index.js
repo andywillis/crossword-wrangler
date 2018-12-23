@@ -1,38 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import compileClasses from 'classnames';
 
 import style from './style.css';
 
-class Button extends Component {
+function Button(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = { on: false };
-    this.handleClick = this.handleClick.bind(this);
-  }
+  const {
+    dataId, dataType, dataName, size,
+    selected, children, handleChange
+  } = props;
 
-  handleClick() {
-    const { toggleSolution } = this.props;
-    this.setState(prev => ({ on: !prev.on }));
-    toggleSolution();
-  }
+  const buttonClass = compileClasses({
+    [style.button]: true,
+    [style[size]]: true,
+    [style.selected]: selected && true
+  });
 
-  render() {
+  return (
+    <button
+      type="button"
+      data-id={dataId}
+      data-type={dataType}
+      data-name={dataName}
+      className={buttonClass}
+      onClick={handleChange}
+    >{children}
+    </button>
+  );
 
-    const { on } = this.state;
-    const { children } = this.props;
-    const buttonClass = compileClasses(style.button, on && style.on);
-
-    return (
-      <button
-        type="button"
-        className={buttonClass}
-        onClick={this.handleClick}
-      >{children} {on ? 'off' : 'on'}
-      </button>
-    );
-
-  }
 }
 
 export default Button;

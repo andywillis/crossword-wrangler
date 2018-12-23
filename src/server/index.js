@@ -26,12 +26,19 @@ app.get('/crossword/:type/:id', async (req, res) => {
   const { type, id } = req.params;
   const filePath = path.join(__dirname, `data/${type}/${type}_${id}.json`);
 
-  if (!await pathExists(filePath)) {
-    await getCrosswords(type, id);
-  }
+  try {
 
-  const json = await promisifiedReadFile(filePath, 'utf8');
-  res.send(json);
+    if (!await pathExists(filePath)) {
+      await getCrosswords(type, id);
+    }
+
+    const crosswordJSON = await promisifiedReadFile(filePath, 'utf8');
+    const resJSON = JSON.stringify([null, JSON.parse(crosswordJSON)]);
+    res.send(resJSON);
+
+  } catch (err) {
+    res.send(JSON.stringify([err]));
+  }
 
 });
 

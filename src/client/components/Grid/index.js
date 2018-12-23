@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import compileClasses from 'classnames';
+
 import { dataReady } from '../../lib/utils';
 
 import ButtonGroup from '../ButtonGroup';
@@ -65,13 +67,16 @@ class Grid extends Component {
           })}
         </div>
 
-        <ButtonGroup print={print}>
-          <Button
-            type="button"
-            toggleSolution={this.toggleSolution}
-          >Toggle solution
-          </Button>
-        </ButtonGroup>
+        <div className={compileClasses(style.buttons, style.align)}>
+          <ButtonGroup print={print} handleChange={this.toggleSolution}>
+            <Button
+              type="button"
+              size="medium"
+              dataType="solution"
+            >Toggle solution
+            </Button>
+          </ButtonGroup>
+        </div>
 
       </div>
     );

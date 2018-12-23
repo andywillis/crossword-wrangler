@@ -1,8 +1,24 @@
 .buttonGroup {
-  margin-top: 0.5em;
-  text-align: right;
+  display: inline-flex;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  margin-left: 0;
 }
 
 .hidden {
   display: none;
+}
+
+.printType {
+  display: inline;
+  margin-left: 0.2em;
+}
+
+.printType::after {
+  content: ',';
 }

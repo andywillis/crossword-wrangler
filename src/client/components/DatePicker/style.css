@@ -1,9 +1,11 @@
-.printData, .datePicker {
+.printDate, .datePicker {
   font-size: inherit;
   color: inherit;
   font-weight: inherit;
+  margin-left: 0.4em;
 }
 
 .datePicker {
   background-color: #efefef;
+  border: 1px solid #9fc59f;
 }

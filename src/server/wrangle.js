@@ -5,7 +5,7 @@ const log = require('single-line-log').stdout;
 const createThrottle = require('async-throttle');
 const { parseString } = require('xml2js');
 
-const { writeFile, pathExists, addFolder } = require('./lib/io');
+const { logError, writeFile, pathExists, addFolder } = require('./lib/io');
 const { getWeekDayCalendar } = require('./lib/calendar');
 
 const throttle = createThrottle(2);
@@ -63,7 +63,7 @@ async function processLink(link, index, type, filePath) {
       await writeFile(uri, json);
       log(`Saved ${index}/${uris[type].length} ${uri}`);
     } catch (err) {
-      console.error(`${err.statusCode}`);
+      console.error(err.statusCode);
     }
   }
 
@@ -73,9 +73,10 @@ async function getCrosswords(type, id) {
   const root = path.join(__dirname);
   const filePath = path.join(root, 'data', type);
 
-  if (!await pathExists(filePath)) {
-    await addFolder(filePath);
+  if (!await pathExists(filePath).catch(logError)) {
+    await addFolder(filePath).catch(logError);
   }
+
 
   if (id) {
     await processLink(`${uri}${type}_${id}.xml`, 0, type, filePath);
@@ -83,7 +84,7 @@ async function getCrosswords(type, id) {
     uris[type].forEach((link, index) => {
       throttle(() => processLink(link, index, type, filePath));
     });
-  }
+  }    
 
 }
 

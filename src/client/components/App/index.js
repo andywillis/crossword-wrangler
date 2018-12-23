@@ -1,54 +1,71 @@
 import React, { Component } from 'react';
 import compileClasses from 'classnames';
 
+import { getNowDate, isAWeekDay } from '../../lib/date';
 import { dataReady } from '../../lib/utils';
 import { getDeviceDimensions } from '../../lib/device';
 
+import Selector from '../Selector';
 import Crossword from '../Crossword';
 import Heading from '../Common/Heading';
-import DatePicker from '../DatePicker';
-import Spinner from '../Spinner';
 
 import style from './style.css';
-
-function getNowDate(delimiter) {
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-  const now = new Date().toLocaleString('en-GB', options);
-  const re = /(\d{2})\/(\d{2})\/(\d{4})/g;
-  return now.replace(re, (all, d, m, y) => {
-    const year = delimiter ? y : y.substr(2, 2);
-    return delimiter ? `${year}-${m}-${d}` : `${year}${m}${d}`;
-  });
-}
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { crossword: {}, print: false, loading: false };
+    this.state = { crossword: {}, print: false, date: null, type: 'easy', loading: false };
     this.handleBeforePrint = this.handleBeforePrint.bind(this);
     this.handleAfterPrint = this.handleAfterPrint.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleCrosswordChange = this.handleCrosswordChange.bind(this);
   }
 
   async componentDidMount() {
     const { deviceWidth } = getDeviceDimensions();
+    const date = getNowDate(true);
     this.deviceWidth = deviceWidth;
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
-    this.fetchData(getNowDate(false));
+    this.fetchData('easy', date);
   }
 
-  async fetchData(date) {
-    this.setState({ loading: true });
-    const res = await fetch(`/crossword/easy/${date}`);
-    const crossword = await res.json();
-    this.setState({ crossword });
-    this.setState({ loading: false });
+  getBody() {
+    const { crossword, print } = this.state;
+    if (dataReady(crossword)) {
+      const { width, height, clues, squares } = crossword;
+      return (
+        <Crossword
+          width={width}
+          height={height}
+          deviceWidth={this.deviceWidth}
+          print={print}
+          clues={clues}
+          squares={squares}
+        />
+      );
+    }
+    return <div>No crossword available for this date.</div>;
   }
 
-  handleDateChange(date) {
-    this.fetchData(date);
+  async fetchData(type, date) {
+    if (isAWeekDay(date)) {
+      this.setState({ loading: true });
+      const res = await fetch(`/crossword/${type}/${date}`);
+      const [err, crossword] = await res.json();
+      if (err) {
+        console.error(err);
+        this.setState({ crossword: null });
+      } else {
+        this.setState({ type, crossword, date, loading: false });
+      }
+    } else {
+      this.setState({ crossword: null });
+    }
+  }
+
+  handleCrosswordChange(type, date) {
+    this.fetchData(type, date);
   }
 
   handleBeforePrint() {
@@ -60,37 +77,21 @@ class App extends Component {
   }
 
   render() {
-    const { crossword, print, loading } = this.state;
-    const { width, height, clues, squares } = crossword;
 
+    const { print, loading, date, type } = this.state;
     const loaderClass = compileClasses(style.loader, style.loading);
 
-    if (dataReady(crossword)) {
-      return (
-        <div className={style.app}>
-          <Heading level="h2">
-            Easy Crossword&nbsp;&mdash;&nbsp;
-            <DatePicker
-              deviceWidth={this.deviceWidth}
-              print={print}
-              min="2016-05-23"
-              value={getNowDate(true)}
-              handleDateChange={this.handleDateChange}
-            />
-            {loading && <div className={loaderClass}>&#1422;</div>}
-          </Heading>
-          <Crossword
-            width={width}
-            height={height}
-            deviceWidth={this.deviceWidth}
-            print={print}
-            clues={clues}
-            squares={squares}
-          />
-        </div>
-      );
-    }
-    return <Spinner />;
+    return (
+      <div className={style.app}>
+        <Heading level="h2">
+          ES Crossword&nbsp;&mdash;&nbsp;
+          <Selector type={type} date={date} print={print} handleCrosswordChange={this.handleCrosswordChange} />
+          {loading && <div className={loaderClass}>&#1422;</div>}
+        </Heading>
+        {this.getBody()}
+      </div>
+    );
+
   }
 }
 
