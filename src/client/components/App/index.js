@@ -23,7 +23,7 @@ class App extends Component {
 
   async componentDidMount() {
     const { deviceWidth } = getDeviceDimensions();
-    const date = getNowDate(true);
+    const date = getNowDate();
     this.deviceWidth = deviceWidth;
     window.onbeforeprint = this.handleBeforePrint;
     window.onafterprint = this.handleAfterPrint;
@@ -85,7 +85,12 @@ class App extends Component {
       <div className={style.app}>
         <Heading level="h2">
           ES Crossword&nbsp;&mdash;&nbsp;
-          <Selector type={type} date={date} print={print} handleCrosswordChange={this.handleCrosswordChange} />
+          <Selector
+            type={type}
+            date={date}
+            print={print}
+            handleCrosswordChange={this.handleCrosswordChange}
+          />
           {loading && <div className={loaderClass}>&#1422;</div>}
         </Heading>
         {this.getBody()}
