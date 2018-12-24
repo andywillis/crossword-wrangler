@@ -25,9 +25,14 @@ class App extends Component {
     const { deviceWidth } = getDeviceDimensions();
     const date = getNowDate();
     this.deviceWidth = deviceWidth;
-    window.onbeforeprint = this.handleBeforePrint;
-    window.onafterprint = this.handleAfterPrint;
+    window.addEventListener('beforeprint', this.handleBeforePrint, false);
+    window.addEventListener('afterprint', this.handleAfterPrint, false);
     this.fetchData('easy', date);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeprint', this.handleBeforePrint);
+    window.removeEventListener('afterprint', this.handleAfterPrint);
   }
 
   getBody() {
