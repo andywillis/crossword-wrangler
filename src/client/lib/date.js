@@ -23,6 +23,7 @@ function stripDate(date) {
   const [year, month, day] = date.split('-');
   return `${year.substr(2, 2)}${month}${day}`;
 }
+
 module.exports = {
   getNowDate,
   formatDate,
