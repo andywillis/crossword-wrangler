@@ -3,12 +3,12 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const { readFile } = require('fs');
-const { promisify } = require('util');
-const { pathExists } = require('./lib/io');
+// const { readFile } = require('fs');
+// const { promisify } = require('util');
+const { pathExists, readFile } = require('./lib/io');
 const { getCrosswords } = require('./wrangle');
 
-const promisifiedReadFile = promisify(readFile);
+// const promisifiedReadFile = promisify(readFile);
 
 const app = express();
 app.store = {};
@@ -32,7 +32,7 @@ app.get('/crossword/:type/:id', async (req, res) => {
       await getCrosswords(type, id);
     }
 
-    const crosswordJSON = await promisifiedReadFile(filePath, 'utf8');
+    const crosswordJSON = await readFile(filePath);
     const resJSON = JSON.stringify([null, JSON.parse(crosswordJSON)]);
     res.send(resJSON);
 

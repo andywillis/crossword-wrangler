@@ -12,5 +12,3 @@ Note, this isn't meant to be a crossword that you can fill out, although I may i
 * Move `wrangle.js` `readFile` to `io`
 * Redux
 * Preact
-* Improved error detection for 404s.
-* unmount code

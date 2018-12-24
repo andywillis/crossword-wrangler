@@ -4,6 +4,7 @@ const { promisify } = require('util');
 const mkdirP = promisify(fs.mkdir);
 const statP = promisify(fs.stat);
 const writeFileP = promisify(fs.writeFile);
+const readFileP = promisify(fs.readFile);
 
 function logError(err) {
   console.error(err.statusCode);
@@ -15,6 +16,17 @@ function addFolder(filePath) {
       await mkdirP(filePath);
       console.log(`Added folder: ${filePath}`);
       resolve();
+    } catch (err) {
+      console.error(err.message);
+    }
+  });
+}
+
+function readFile(filePath) {
+  return new Promise(async (resolve) => {
+    try {
+      const data = readFileP(filePath, 'utf8');
+      resolve(data);
     } catch (err) {
       console.error(err.message);
     }
@@ -47,5 +59,6 @@ module.exports = {
   addFolder,
   logError,
   pathExists,
-  writeFile
+  writeFile,
+  readFile
 };
