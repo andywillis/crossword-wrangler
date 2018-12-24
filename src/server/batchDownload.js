@@ -5,8 +5,8 @@ const log = require('single-line-log').stdout;
 const createThrottle = require('async-throttle');
 const { parseString } = require('xml2js');
 
-const { logError, writeFile, pathExists, addFolder } = require('./lib/io');
-const { getWeekDayCalendar } = require('./lib/calendar');
+const { logError, writeFile, pathExists, addFolder } = require('./io');
+const { getWeekDayCalendar } = require('./calendar');
 
 const throttle = createThrottle(2);
 const xmlParseString = promisify(parseString);
@@ -71,12 +71,18 @@ async function processLink(link, index, type, filePath) {
 
 async function getCrosswords(type, id) {
   const root = path.join(__dirname);
-  const filePath = path.join(root, 'data', type);
 
-  if (!await pathExists(filePath).catch(logError)) {
-    await addFolder(filePath).catch(logError);
+  const dataPath = path.join(root, 'data');
+
+  if (!await pathExists(dataPath)) {
+    await addFolder(dataPath);
   }
 
+  const filePath = path.join(root, 'data', type);
+
+  if (!await pathExists(filePath)) {
+    await addFolder(filePath);
+  }
 
   if (id) {
     await processLink(`${uri}${type}_${id}.xml`, 0, type, filePath);
@@ -88,12 +94,7 @@ async function getCrosswords(type, id) {
 
 }
 
-async function downloadAllCrosswords() {
+(async () => {
   await getCrosswords('easy');
   await getCrosswords('quick');
-}
-
-module.exports = {
-  getCrosswords,
-  downloadAllCrosswords
-};
+})();
