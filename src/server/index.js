@@ -3,12 +3,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-// const { readFile } = require('fs');
-// const { promisify } = require('util');
 const { pathExists, readFile } = require('./lib/io');
-const { getCrosswords } = require('./wrangle');
-
-// const promisifiedReadFile = promisify(readFile);
+const { getCrossword } = require('./crossword');
 
 const app = express();
 app.store = {};
@@ -29,7 +25,7 @@ app.get('/crossword/:type/:id', async (req, res) => {
   try {
 
     if (!await pathExists(filePath)) {
-      await getCrosswords(type, id);
+      await getCrossword(type, id);
     }
 
     const crosswordJSON = await readFile(filePath);
