@@ -25,3 +25,7 @@
 .block {
   background-color: #121212;
 }
+
+.selected {
+  border: 4px solid orange;
+}

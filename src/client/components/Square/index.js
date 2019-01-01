@@ -3,10 +3,25 @@ import compileClasses from 'classnames';
 
 import style from './style.css';
 
-function Square({ showSolution, square, deviceWidth, print, noOfSquares }) {
+function Square(props) {
 
-  const { solution, type, number } = square;
-  const classNames = compileClasses(style.square, style[type]);
+  const {
+    square: { x, y, solution, type, number },
+    showSolution,
+    squareId,
+    selected,
+    deviceWidth,
+    print,
+    noOfSquares,
+    handleClick,
+    handleKeyUp
+  } = props;
+
+  const classNames = compileClasses({
+    [style.square]: true,
+    [style[type]]: type && true,
+    [style.selected]: selected && true
+  });
 
   let letterSize;
 
@@ -34,7 +49,15 @@ function Square({ showSolution, square, deviceWidth, print, noOfSquares }) {
   }
 
   return (
-    <div className={classNames}>
+    <div
+      role="presentation"
+      className={classNames}
+      data-id={squareId}
+      data-x={x}
+      data-y={y}
+      onClick={solution && handleClick}
+      onKeyUp={solution && handleKeyUp}
+    >
       <div className={style.number}>{number}</div>
       {/* <div data-solution={solution} className={style.input} /> */}
     </div>

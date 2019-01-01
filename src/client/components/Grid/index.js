@@ -28,18 +28,28 @@ class Grid extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { showSolution: false };
+    this.state = { showSolution: false, selected: null, highlighted: { x: [], y: [] } };
     this.toggleSolution = this.toggleSolution.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   toggleSolution() {
     this.setState(prev => ({ showSolution: !prev.showSolution }));
   }
 
+  handleClick(e) {
+    const { dataset: { id } } = e.target;
+    this.setState({ selected: Number(id) });
+  }
+
+  handleKeyUp(e) {
+    console.log(e);
+  }
+
   render() {
 
     const { width: noOfSquares, squares, print, deviceWidth } = this.props;
-    const { showSolution } = this.state;
+    const { showSolution, selected, highlighted } = this.state;
 
     let squareWidth;
 
@@ -56,12 +66,16 @@ class Grid extends Component {
           {dataReady(squares) && squares.map((square, i) => {
             return (
               <Square
+                selected={selected === i ? true : false}
                 showSolution={showSolution}
                 key={i}
                 square={square}
+                squareId={i}
                 print={print}
                 deviceWidth={deviceWidth}
                 noOfSquares={noOfSquares}
+                handleClick={this.handleClick}
+                handleKeyUp={this.handleKeyUp}
               />
             );
           })}
