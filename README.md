@@ -4,6 +4,8 @@ To present ES crosswords in an easy-to-print format. Because print stylesheets a
 
 Note, this isn't meant to be a crossword that you can fill out, although I may implement that functionality eventually.
 
+![screenshot](https://raw.githubusercontent.com/andywillis/wordFrequency/develop/public/Screenshot.png)
+
 ## To Do
 
 * Routing
