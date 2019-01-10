@@ -6,11 +6,8 @@ Note, this isn't meant to be a crossword that you can fill out, although I may i
 
 ![screenshot](https://raw.githubusercontent.com/andywillis/crossword-wrangler/develop/public/Screenshot.png)
 
-## To Do
+## Tech
 
-* Routing
-* Proper date valiidation / separate lib
-* Separate print lib
-* Move `wrangle.js` `readFile` to `io`
-* Redux
-* Preact
+* React
+* Express
+* CSS Grid
