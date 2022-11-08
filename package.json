@@ -4,7 +4,7 @@
   "description": "Produce printable copies of the ES crosswords",
   "main": "index.js",
   "engines": {
-    "node": "^14.21.2"
+    "node": "^14.21.1"
   },
   "scripts": {
     "builddev": "webpack-dev-server --mode development --devtool inline-source-map --hot",
