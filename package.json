@@ -3,12 +3,15 @@
   "version": "1.0.1",
   "description": "Produce printable copies of the ES crosswords",
   "main": "index.js",
+  "engines": {
+    "node": "^14.21.2"
+  },
   "scripts": {
     "builddev": "webpack-dev-server --mode development --devtool inline-source-map --hot",
     "serverdev": "node src/server/index.js",
     "buildprod": "webpack --mode production",
     "serverprod": "node src/server/index.js",
-    "dev": "concurrently \"npm run builddev\" \"npm run serverdev\"",
+    "dev": "npm run builddev && npm run serverdev",
     "prod": "npm run buildprod && npm run serverprod",
     "report": "webpack-bundle-analyzer --port 4200 dist/stats.json",
     "heroku-postbuild": "npm run buildprod",
