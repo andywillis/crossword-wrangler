@@ -61,7 +61,7 @@
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "compression": "^1.7.3",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "googleapis": "^34.0.0",
     "jsdom": "^13.0.0",
     "lodash.throttle": "^4.1.1",
