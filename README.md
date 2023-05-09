@@ -4,7 +4,7 @@ To present ES crosswords in an easy-to-print format. Because print stylesheets a
 
 Note, this isn't meant to be a crossword that you can fill out, although I may implement that functionality eventually.
 
-![Crossword screenshot](https://github.com/andywillis/crossword-wrangler-rework/blob/main/documentation/crossword_screenshot.png)
+![Crossword screenshot](https://github.com/andywillis/crossword-wrangler/blob/main/documentation/crossword_screenshot.png)
 
 ## To Do
 
