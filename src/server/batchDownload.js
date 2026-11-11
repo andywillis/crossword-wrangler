@@ -5,17 +5,18 @@ const log = require('single-line-log').stdout;
 const createThrottle = require('async-throttle');
 const { parseString } = require('xml2js');
 
-const { logError, writeFile, pathExists, addFolder } = require('./io');
-const { getWeekDayCalendar } = require('./calendar');
+const { logError, writeFile, pathExists, addFolder } = require('./lib/io');
+const { getWeekDayCalendar } = require('./lib/calendar');
 
 const throttle = createThrottle(2);
 const xmlParseString = promisify(parseString);
 
 const uris = { easy: [], quick: [] };
 const uri = 'https://ams.cdn.arkadiumhosted.com/assets/gamesfeed/evening-standard/daily-crossword/';
+const year = 2028;
 
-uris.easy = getWeekDayCalendar(2018).map(date => `${uri}easy_${date}.xml`);
-uris.quick = getWeekDayCalendar(2018).map(date => `${uri}quic_${date}.xml`);
+uris.easy = getWeekDayCalendar(year).map(date => `${uri}easy_${date}.xml`);
+uris.quick = getWeekDayCalendar(year).map(date => `${uri}quic_${date}.xml`);
 
 function getClues(obj) {
   const { title, clue: cluesArr } = obj;
